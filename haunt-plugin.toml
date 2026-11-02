@@ -1,0 +1,19 @@
+[plugin]
+id = "dev.haunt.tabs"
+name = "Tabs"
+version = "0.1.0"
+api = "0.3"
+entry = "target/wasm32-wasip2/release/haunt_plugin.wasm"
+license = "MIT"
+
+[capabilities]
+sidebar = true
+
+[settings]
+manual_order = { type = "bool", default = true, description = "Move tabs by dragging, with ⌥⌘↑/↓ or from the palette" }
+flat = { type = "bool", default = false, description = "One manual list instead of ordering within RUNNING and IDLE" }
+custom_groups = { type = "bool", default = true, description = "Named groups you put tabs in" }
+groups_placement = { type = "string", default = "before", description = "Custom groups \"before\" or \"after\" RUNNING and IDLE" }
+pins = { type = "bool", default = true, description = "Pinned tabs stay at the top, under NEEDS YOU" }
+colors = { type = "bool", default = true, description = "Pick a colour for a tab" }
+color_style = { type = "string", default = "dot", description = "A \"dot\" beside the name, or a faint row \"tint\"" }
