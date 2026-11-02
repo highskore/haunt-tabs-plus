@@ -182,6 +182,8 @@ impl Guest for Plugin {
             commit(st, &rows);
         }
     }
+
+    fn on_theme_changed() {}
 }
 
 export!(Plugin);

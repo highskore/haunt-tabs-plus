@@ -48,7 +48,7 @@ cargo build --release --target wasm32-wasip2   # or ./build.sh
 haunt plugin install .
 ```
 
-It needs Haunt with `haunt:plugin@0.3` (`api = "0.3"`). `wit/haunt-plugin.wit` is a copy of Haunt's, pinned at that version.
+It needs Haunt with `haunt:plugin@0.4` (`api = "0.4"`). `wit/haunt-plugin.wit` is a copy of Haunt's, pinned at that version.
 
 ## Licence
 
