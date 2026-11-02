@@ -28,7 +28,16 @@ fn settings() -> Settings {
 }
 
 fn load() -> State {
-    kv::get(KEY).map(|j| State::parse(&j)).unwrap_or_default()
+    kv::get(KEY)
+        .map(|j| match State::try_parse(&j) {
+            Ok(st) => st,
+            // Falling back is deliberate (bounded loss beats a wedged plugin); the log is its only trace.
+            Err(e) => {
+                log(LogLevel::Warn, &format!("tabs: saved state unreadable ({e}); starting fresh"));
+                State::default()
+            }
+        })
+        .unwrap_or_default()
 }
 
 /// Saves `st` and pushes its arrangement over the current rows.
