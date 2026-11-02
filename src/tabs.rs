@@ -86,11 +86,13 @@ fn color(key: &str) -> Option<TabColor> {
     COLORS.iter().find(|(k, _, _)| *k == key).map(|(_, _, c)| *c)
 }
 
-/// A group name the core will show: 1 to 32 visible characters, not a core group's.
+/// A group name Haunt accepts as a section title: 1 to 32 ASCII letters, digits, spaces and basic
+/// punctuation, not spelling a core group.
 pub fn valid_name(name: &str) -> Option<String> {
-    let n = name.split_whitespace().collect::<Vec<_>>().join(" ");
-    let shown = n.to_uppercase();
-    let ok = !n.is_empty() && n.chars().count() <= MAX_NAME && !CORE_GROUPS.contains(&shown.as_str()) && !n.chars().any(char::is_control);
+    let allowed = |c: char| c.is_ascii_alphanumeric() || c.is_ascii_whitespace() || "-_.,:;!?'&()/+#".contains(c);
+    let n = name.split_ascii_whitespace().collect::<Vec<_>>().join(" ");
+    let key = |s: &str| s.chars().filter(char::is_ascii_alphanumeric).collect::<String>().to_ascii_uppercase();
+    let ok = name.chars().all(allowed) && !key(&n).is_empty() && n.len() <= MAX_NAME && !CORE_GROUPS.iter().any(|c| key(c) == key(&n));
     ok.then_some(n)
 }
 
@@ -149,6 +151,8 @@ impl State {
         let sections = if s.custom_groups {
             self.groups
                 .iter()
+                // A name saved before Haunt narrowed titles would get the whole arrangement refused.
+                .filter(|g| valid_name(&g.name).is_some())
                 .map(|g| Section {
                     id: g.id.clone(),
                     title: g.name.clone(),
@@ -377,18 +381,27 @@ mod tests {
         assert!(!st.move_to(&s, &rows, "r1", "needs-you", None));
         assert!(!st.move_to(&s, &rows, "r1", "section:nope", None));
     }
-
     #[test]
     fn groups_need_real_names_and_ids_stay_unique() {
         let mut st = State::default();
-        for bad in ["", "   ", "needs you", "Pinned", "tabs", &"x".repeat(33)] {
+        for bad in ["", "   ", "needs you", "Pinned", "tabs", &"x".repeat(33), "N\u{0415}\u{0415}DS YOU", "N-E-E-D-S YOU", "☕", "Café"] {
             assert_eq!(st.new_group(bad), None, "{bad:?}");
         }
         assert_eq!(st.new_group("Side  projects").as_deref(), Some("side-projects"));
         assert_eq!(st.new_group("side projects").as_deref(), Some("side-projects"), "same name, same group");
         assert_eq!(st.new_group("Side/projects").as_deref(), Some("side-projects-2"));
-        assert_eq!(st.new_group("☕").as_deref(), Some("group"));
+        assert_eq!(st.new_group("!!").as_deref(), None);
+        assert_eq!(st.new_group("#1").as_deref(), Some("1"));
         assert_eq!(st.groups[0].name, "Side projects");
+    }
+
+    #[test]
+    fn a_saved_name_haunt_would_refuse_is_left_out_not_sent() {
+        let mut st = State::parse(r#"{"groups":[{"id":"cafe","name":"Café"}]}"#);
+        let work = st.new_group("Work").unwrap();
+        assert_eq!(st.groups.len(), 2);
+        let a = st.arrangement(&Settings::default(), &[]);
+        assert_eq!(a.sections.iter().map(|s| s.id.as_str()).collect::<Vec<_>>(), [work.as_str()]);
     }
 
     #[test]
