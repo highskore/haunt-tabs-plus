@@ -1,6 +1,6 @@
-# haunt-tabs
+# haunt-tabs-plus
 
-Tab arranging for the Haunt sidebar, as a first-party plugin (`dev.haunt.tabs`). Every feature is a setting and can be turned off.
+Tab arranging for the Haunt sidebar, as a first-party plugin (`dev.haunt.tabs-plus`). Every feature is a setting and can be turned off.
 
 - **Manual order**: drag rows in the sidebar, press ⌥⌘↑ / ⌥⌘↓, or use "Move tab up" / "Move tab down" in the ⌘K palette or the row menu. A tab moves within its group. The order is one list across RUNNING and IDLE, so a tab that finishes and starts again keeps its place. With `flat = true` it is one manual list called TABS instead.
 - **Custom groups**: in the palette, type `group `, then a name, and choose "New group". A tab joins a group from the row menu (Group ▸) or the same palette mode. The palette mode also removes a tab from its group and deletes groups. `groups_placement` puts them before or after RUNNING and IDLE.

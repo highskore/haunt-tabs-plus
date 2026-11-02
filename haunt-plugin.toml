@@ -1,6 +1,6 @@
 [plugin]
-id = "dev.haunt.tabs"
-name = "Tabs"
+id = "dev.haunt.tabs-plus"
+name = "Tabs Plus"
 version = "0.1.0"
 api = "0.3"
 entry = "target/wasm32-wasip2/release/haunt_plugin.wasm"
