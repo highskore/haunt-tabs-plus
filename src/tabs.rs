@@ -97,8 +97,9 @@ pub fn valid_name(name: &str) -> Option<String> {
 }
 
 impl State {
-    pub fn parse(json: &str) -> Self {
-        serde_json::from_str(json).unwrap_or_default()
+    /// The caller decides the fallback; `load` logs and defaults on corrupt input, so the loss is seen.
+    pub fn try_parse(json: &str) -> Result<Self, serde_json::Error> {
+        serde_json::from_str(json)
     }
 
     pub fn to_json(&self) -> String {
@@ -397,7 +398,7 @@ mod tests {
 
     #[test]
     fn a_saved_name_haunt_would_refuse_is_left_out_not_sent() {
-        let mut st = State::parse(r#"{"groups":[{"id":"cafe","name":"Café"}]}"#);
+        let mut st = State::try_parse(r#"{"groups":[{"id":"cafe","name":"Café"}]}"#).unwrap();
         let work = st.new_group("Work").unwrap();
         assert_eq!(st.groups.len(), 2);
         let a = st.arrangement(&Settings::default(), &[]);
@@ -468,7 +469,7 @@ mod tests {
         st.prune(&rows());
         assert_eq!((st.order.clone(), st.pinned.clone()), (ids(&["r1"]), ids(&["r1"])));
         assert!(st.member.is_empty() && st.colors.is_empty() && st.groups.len() == 1, "groups outlive their tabs");
-        assert_eq!(State::parse(&st.to_json()), st);
-        assert_eq!(State::parse("not json"), State::default());
+        assert_eq!(State::try_parse(&st.to_json()).unwrap(), st);
+        assert!(State::try_parse("not json").is_err(), "corrupt input is the caller's fallback, not parse's");
     }
 }
