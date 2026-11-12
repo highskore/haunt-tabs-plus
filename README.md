@@ -60,7 +60,7 @@ haunt plugin install .
 
 Or from a haunt.app built with it (`macos/make-app.sh --plugins tabs-plus`): `haunt setup --plugins tabs-plus`, or check it in the setup sheet or Settings. Haunt never installs it on its own.
 
-It needs Haunt with `haunt:plugin@0.4` (`api = "0.4"`). `wit/haunt-plugin.wit` is a copy of Haunt's, pinned at that version.
+It needs Haunt with `haunt:plugin@0.5` (`api = "0.5"`). `wit/haunt-plugin.wit` is a copy of Haunt's, pinned at that version.
 
 ## Licence
 

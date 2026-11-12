@@ -124,8 +124,7 @@ impl Guest for Plugin {
         commit(load(), &sidebar::rows());
     }
 
-    fn on_event(_event: AgentEvent) -> Option<Decoration> {
-        None
+    fn on_event(_event: AgentEvent) {
     }
 
     fn palette_items(mode: String, query: String) -> Vec<PaletteItem> {
@@ -200,6 +199,16 @@ impl Guest for Plugin {
     }
 
     fn on_theme_changed() {}
+
+    fn on_tick(_now_ms: u64) {}
+
+    fn on_exec(_job: u64, _outcome: Result<haunt::plugin::exec::Output, String>) {}
+
+    fn on_away_changed(_away: bool, _away_ms: u64) {}
+
+    fn on_hover_hold(_held: bool, _surface: String) {}
+
+    fn on_fs_tree(_job: u64, _outcome: Result<haunt::plugin::fs_list::TreeResult, String>) {}
 }
 
 export!(Plugin);

@@ -1,7 +1,7 @@
 [package]
 # Fixed so the manifest's `entry` path stays valid in every plugin made from this template.
 name = "haunt-plugin"
-description = "Tab order, pins, custom groups and colours for the Haunt sidebar."
+description = "Arrange the sidebar: manual order, custom groups, pins and colours"
 edition = "2024"
 license = "MIT"
 version = "0.1.0"
