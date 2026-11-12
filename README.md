@@ -1,4 +1,17 @@
-# haunt-tabs-plus
+<div align="center">
+
+<img src="docs/icon.png" width="96" alt="">
+
+# Tabs Plus
+
+**Tab arranging for the Haunt sidebar.**
+
+[![Haunt plugin](https://img.shields.io/badge/Haunt-plugin-D97757)](https://github.com/highskore/haunt-hackathon)
+![Plugin API 0.5](https://img.shields.io/badge/plugin%20API-0.5-111)
+![WASM component](https://img.shields.io/badge/WASM-component-654ff0?logo=webassembly&logoColor=white)
+![MIT licence](https://img.shields.io/badge/licence-MIT-6b7280)
+
+</div>
 
 Tab arranging for the Haunt sidebar, as a first-party plugin (`dev.haunt.tabs-plus`). Every feature is a setting and can be turned off.
 
